@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema elementFormDefault="qualified"
+            targetNamespace="http://schemas.microsoft.com/office/powerpoint/2018/8/main"
+            xmlns="http://schemas.microsoft.com/office/powerpoint/2018/8/main"
+            xmlns:p188="http://schemas.microsoft.com/office/powerpoint/2018/8/main"
+            xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+            xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+            xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+            xmlns:s="http://schemas.openxmlformats.org/officeDocument/2006/sharedTypes"
+            xmlns:pc="http://schemas.microsoft.com/office/powerpoint/2013/main/command"
+            xmlns:ac="http://schemas.microsoft.com/office/drawing/2013/main/command"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:import namespace="http://schemas.microsoft.com/office/drawing/2013/main/command"
+	            schemaLocation="dml-cmd.xsd"/>
+	<xsd:import namespace="http://schemas.openxmlformats.org/drawingml/2006/main"
+	            schemaLocation="dml-main.xsd"/>
+	<xsd:import namespace="http://schemas.openxmlformats.org/officeDocument/2006/sharedTypes"
+	            schemaLocation="shared-commonSimpleTypes.xsd"/>
+	<xsd:import namespace="http://schemas.openxmlformats.org/presentationml/2006/main"
+	            schemaLocation="pml.xsd"/>
+	<xsd:simpleType name="ST_AuthorId">
+		<xsd:restriction base="s:ST_Guid"/>
+	</xsd:simpleType>
+	<xsd:complexType name="CT_Author">
+		<xsd:sequence>
+			<xsd:element name="extLst"
+			             type="p:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"
+		               type="ST_AuthorId"
+		               use="required"/>
+		<xsd:attribute name="name"
+		               type="xsd:string"
+		               use="required"/>
+		<xsd:attribute name="initials"
+		               type="xsd:string"
+		               use="optional"/>
+		<xsd:attribute name="userId"
+		               type="xsd:string"
+		               use="required"/>
+		<xsd:attribute name="providerId"
+		               type="xsd:string"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_AuthorList">
+		<xsd:sequence>
+			<xsd:element name="author"
+			             type="CT_Author"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="ST_AuthorIdList">
+		<xsd:list itemType="ST_AuthorId"/>
+	</xsd:simpleType>
+	<xsd:element name="authorLst"
+	             type="CT_AuthorList"/>
+	<xsd:simpleType name="ST_CommentStatus"
+	                xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="active"/>
+			<xsd:enumeration value="resolved"/>
+			<xsd:enumeration value="closed"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ST_CommentId"
+	                xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:restriction base="s:ST_Guid"/>
+	</xsd:simpleType>
+	<xsd:group name="EG_CommentProperties"
+	           xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:sequence>
+			<xsd:element name="txBody"
+			             type="a:CT_TextBody"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:element name="extLst"
+			             type="p:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:group>
+	<xsd:attributeGroup name="AG_CommentProperties"
+	                    xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:attribute name="id"
+		               type="ST_CommentId"
+		               use="required"/>
+		<xsd:attribute name="authorId"
+		               type="ST_AuthorId"
+		               use="required"/>
+		<xsd:attribute name="status"
+		               type="ST_CommentStatus"
+		               use="optional"
+		               default="active"/>
+		<xsd:attribute name="created"
+		               type="xsd:dateTime"
+		               use="required"/>
+	</xsd:attributeGroup>
+	<xsd:complexType name="CT_CommentReply"
+	                 xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:sequence>
+			<xsd:group ref="EG_CommentProperties"
+			           minOccurs="1"
+			           maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="AG_CommentProperties"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_CommentReplyList"
+	                 xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:sequence>
+			<xsd:element name="reply"
+			             type="CT_CommentReply"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CT_CommentUnknownAnchor"
+	                 xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main"/>
+	<xsd:group name="EG_CommentAnchor"
+	           xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:choice>
+			<xsd:element ref="pc:sldMkLst"
+			             minOccurs="1"
+			             maxOccurs="1"/>
+			<xsd:element ref="ac:deMkLst"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element ref="ac:txMkLst"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="unknownAnchor"
+			             type="CT_CommentUnknownAnchor"
+			             minOccurs="1"
+			             maxOccurs="1"/>
+		</xsd:choice>
+	</xsd:group>
+	<xsd:complexType name="CT_Comment"
+	                 xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:sequence>
+			<xsd:group ref="EG_CommentAnchor"
+			           minOccurs="1"
+			           maxOccurs="1"/>
+			<xsd:element name="pos"
+			             type="a:CT_Point2D"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:element name="replyLst"
+			             type="CT_CommentReplyList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:group ref="EG_CommentProperties"
+			           minOccurs="1"
+			           maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="AG_CommentProperties"/>
+		<xsd:attribute name="startDate"
+		               type="xsd:dateTime"
+		               use="optional"/>
+		<xsd:attribute name="assignedTo"
+		               type="ST_AuthorIdList"
+		               use="optional"
+		               default=""/>
+		<xsd:attribute name="complete"
+		               type="s:ST_PositiveFixedPercentage"
+		               default="0%"
+		               use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_CommentList"
+	                 xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:sequence>
+			<xsd:element name="cm"
+			             type="CT_Comment"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="cmLst"
+	             type="CT_CommentList"
+	             xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main"/>
+	<xsd:complexType name="CT_CommentRelationship"
+	                 xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main">
+		<xsd:attribute ref="r:id"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:element name="commentRel"
+	             type="CT_CommentRelationship"
+	             xmlns:p216="http://schemas.microsoft.com/office/powerpoint/2021/06/main"/>
+</xsd:schema>

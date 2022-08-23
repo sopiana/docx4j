@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:oel="http://schemas.microsoft.com/office/2019/extlst"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:w12="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+            elementFormDefault="qualified"
+            blockDefault="#all"
+            xmlns="http://schemas.microsoft.com/office/intelligence/2020/intelligence"
+            targetNamespace="http://schemas.microsoft.com/office/intelligence/2020/intelligence">
+	<xsd:import id="oel"
+	            namespace="http://schemas.microsoft.com/office/2019/extlst"
+	            schemaLocation="officeextlst.xsd"/>
+	<xsd:element name="intelligence"
+	             type="CT_Intelligence"/>
+	<xsd:complexType name="CT_Intelligence">
+		<xsd:sequence>
+			<xsd:element name="observations"
+			             type="CT_Observations"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:element name="intelligenceSettings"
+			             type="CT_IntelligenceSettings"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:element name="onDemandWorkflows"
+			             type="CT_OnDemandWorkflows"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CT_Observations">
+		<xsd:sequence>
+			<xsd:element name="textHash"
+			             type="CT_TextHash"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="bookmark"
+			             type="CT_Bookmark"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="entireDocument"
+			             type="CT_EntireDocument"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CT_Content">
+		<xsd:sequence>
+			<xsd:element name="state"
+			             type="CT_State"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"
+		               type="xsd:string"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_TextHash">
+		<xsd:complexContent>
+			<xsd:extension base="CT_Content">
+				<xsd:attribute name="hashCode"
+				               type="xsd:string"
+				               use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="CT_Bookmark">
+		<xsd:complexContent>
+			<xsd:extension base="CT_Content">
+				<xsd:attribute name="bookmarkName"
+				               type="xsd:string"
+				               use="required"/>
+				<xsd:attribute name="invalidationBookmarkName"
+				               type="xsd:string"
+				               use="optional"/>
+				<xsd:attribute name="hashCode"
+				               type="xsd:string"
+				               use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="CT_EntireDocument">
+		<xsd:complexContent>
+			<xsd:extension base="CT_Content"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="CT_State">
+		<xsd:sequence>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="type"
+		               type="xsd:string"
+		               use="required"/>
+		<xsd:attribute name="value"
+		               type="xsd:string"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_IntelligenceSettings">
+		<xsd:sequence>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CT_OnDemandWorkflows">
+		<xsd:sequence>
+			<xsd:element name="onDemandWorkflow"
+			             type="CT_OnDemandWorkflow"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CT_OnDemandWorkflow">
+		<xsd:sequence>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="type"
+		               type="xsd:string"
+		               use="required"/>
+		<xsd:attribute name="paragraphVersions"
+		               type="ST_ParagraphVersions"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ST_ParagraphVersions">
+		<xsd:list itemType="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:element name="similarityCritique"
+	             type="CT_SimilarityCritique"/>
+	<xsd:complexType name="CT_SimilarityCritique">
+		<xsd:sequence>
+			<xsd:element name="source"
+			             type="CT_SimilaritySource"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="version"
+		               type="xsd:int"/>
+		<xsd:attribute name="context"
+		               type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_SimilaritySource">
+		<xsd:sequence>
+			<xsd:element name="suggestions"
+			             type="CT_SimilaritySuggestionsForType"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="sourceType"
+		               type="xsd:string"/>
+		<xsd:attribute name="sourceTitle"
+		               type="xsd:string"/>
+		<xsd:attribute name="sourceUrl"
+		               type="xsd:string"/>
+		<xsd:attribute name="sourceSnippet"
+		               type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_SimilaritySuggestionsForType">
+		<xsd:sequence>
+			<xsd:element name="suggestion"
+			             type="CT_SimilaritySuggestion"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="citationType"
+		               type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_SimilaritySuggestion">
+		<xsd:sequence>
+			<xsd:element name="citationText"
+			             type="xsd:string"/>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="citationStyle"
+		               type="xsd:string"/>
+		<xsd:attribute name="isIdentical"
+		               type="xsd:boolean"/>
+	</xsd:complexType>
+	<xsd:element name="similaritySummary"
+	             type="CT_SimilaritySummary"/>
+	<xsd:complexType name="CT_SimilaritySummary">
+		<xsd:sequence>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="version"
+		               type="xsd:int"/>
+		<xsd:attribute name="runId"
+		               type="xsd:string"/>
+		<xsd:attribute name="tilesCheckedInThisRun"
+		               type="xsd:int"/>
+		<xsd:attribute name="totalNumOfTiles"
+		               type="xsd:int"/>
+		<xsd:attribute name="similarityAnnotationCount"
+		               type="xsd:int"/>
+		<xsd:attribute name="numWords"
+		               type="xsd:int"/>
+		<xsd:attribute name="numFlaggedWords"
+		               type="xsd:int"/>
+	</xsd:complexType>
+	<xsd:element name="goals"
+	             type="CT_Goals"/>
+	<xsd:complexType name="CT_Goals">
+		<xsd:sequence>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="version"
+		               type="xsd:string"/>
+		<xsd:attribute name="formality"
+		               type="xsd:string"/>
+	</xsd:complexType>
+</xsd:schema>
