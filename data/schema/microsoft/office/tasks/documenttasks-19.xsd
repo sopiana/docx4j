@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns="http://schemas.microsoft.com/office/tasks/2019/documenttasks"
+            targetNamespace="http://schemas.microsoft.com/office/tasks/2019/documenttasks"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:oel="http://schemas.microsoft.com/office/2019/extlst">
+	<xsd:import id="oel"
+	            namespace="http://schemas.microsoft.com/office/2019/extlst"
+	            schemaLocation="officeextlst.xsd"/>
+	<xsd:element name="Tasks"
+	             type="CT_Tasks"/>
+	<xsd:complexType name="CT_Tasks">
+		<xsd:sequence>
+			<xsd:element name="Task"
+			             type="CT_Task"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="extLst"
+			             minOccurs="0"
+			             maxOccurs="1"
+			             type="oel:CT_ExtensionList"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CT_Task">
+		<xsd:sequence>
+			<xsd:element name="Anchor"
+			             type="CT_TaskAnchor"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:element name="History"
+			             type="CT_TaskHistory"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:element name="extLst"
+			             minOccurs="0"
+			             maxOccurs="1"
+			             type="oel:CT_ExtensionList"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"
+		               type="ST_Guid"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_TaskHistory">
+		<xsd:sequence>
+			<xsd:element name="Event"
+			             type="CT_TaskHistoryEvent"
+			             minOccurs="0"
+			             maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CT_TaskHistoryEvent">
+		<xsd:sequence>
+			<xsd:element name="Attribution"
+			             type="CT_TaskUser"
+			             minOccurs="1"
+			             maxOccurs="1"/>
+			<xsd:element name="Anchor"
+			             type="CT_TaskAnchor"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:choice minOccurs="0"
+			            maxOccurs="1">
+				<xsd:element name="Assign"
+				             type="CT_TaskUser"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="Unassign"
+				             type="CT_TaskUser"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="Create"
+				             type="CT_TaskCreateEventInfo"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="SetTitle"
+				             type="CT_TaskTitleEventInfo"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="Schedule"
+				             type="CT_TaskScheduleEventInfo"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="Progress"
+				             type="CT_TaskProgressEventInfo"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="Priority"
+				             type="CT_TaskPriorityEventInfo"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="Delete"
+				             type="CT_TaskDeleteEventInfo"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="Undelete"
+				             type="CT_TaskUndeleteEventInfo"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="UnassignAll"
+				             type="CT_TaskUnassignAll"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+				<xsd:element name="Undo"
+				             type="CT_TaskUndo"
+				             minOccurs="1"
+				             maxOccurs="1"/>
+			</xsd:choice>
+			<xsd:element name="extLst"
+			             type="oel:CT_ExtensionList"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="time"
+		               type="xsd:dateTime"
+		               use="required"/>
+		<xsd:attribute name="id"
+		               type="ST_Guid"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_TaskUser">
+		<xsd:attribute name="userId"
+		               type="xsd:string"
+		               use="required"/>
+		<xsd:attribute name="userName"
+		               type="xsd:string"
+		               use="required"/>
+		<xsd:attribute name="userProvider"
+		               type="xsd:string"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_TaskAnchor">
+		<xsd:sequence>
+			<xsd:element name="Comment"
+			             type="CT_CommentAnchor"
+			             minOccurs="0"
+			             maxOccurs="1"/>
+			<xsd:element name="extLst"
+			             minOccurs="0"
+			             maxOccurs="1"
+			             type="oel:CT_ExtensionList"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CT_CommentAnchor">
+		<xsd:attribute name="id"
+		               type="xsd:string"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ST_IntegerPercentage">
+		<xsd:restriction base="xsd:int">
+			<xsd:minInclusive value="0"/>
+			<xsd:maxInclusive value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="CT_TaskProgressEventInfo">
+		<xsd:attribute name="percentComplete"
+		               type="ST_IntegerPercentage"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ST_PriorityValue">
+		<xsd:restriction base="xsd:int">
+			<xsd:minInclusive value="0"/>
+			<xsd:maxInclusive value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="CT_TaskPriorityEventInfo">
+		<xsd:attribute name="value"
+		               type="ST_PriorityValue"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_TaskScheduleEventInfo">
+		<xsd:attribute name="startDate"
+		               type="xsd:dateTime"
+		               use="optional"/>
+		<xsd:attribute name="dueDate"
+		               type="xsd:dateTime"
+		               use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_TaskTitleEventInfo">
+		<xsd:attribute name="title"
+		               type="xsd:string"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="CT_TaskCreateEventInfo"/>
+	<xsd:complexType name="CT_TaskDeleteEventInfo"/>
+	<xsd:complexType name="CT_TaskUndeleteEventInfo"/>
+	<xsd:complexType name="CT_TaskUnassignAll"/>
+	<xsd:complexType name="CT_TaskUndo">
+		<xsd:attribute name="id"
+		               type="ST_Guid"
+		               use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ST_Guid">
+		<xsd:restriction base="xsd:token">
+			<xsd:pattern value="\{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}\}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
